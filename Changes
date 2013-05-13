@@ -1,8 +1,15 @@
 # Revision history for Data-Lock
 #
-# $Id: Changes,v 1.1 2013/04/03 14:37:57 dankogai Exp dankogai $
+# $Id: Changes,v 1.2 2013/05/13 15:31:54 dankogai Exp dankogai $
 #
-$Revision: 1.1 $ $Date: 2013/04/03 14:37:57 $
+$Revision: 1.2 $ $Date: 2013/05/13 15:31:54 $
+! t/00-load.t
+  s/Attribute::Constant/Data::Lock/
+! lib/Data/Lock.pm t/04-dlock.t
+  Addressed: dunlock \%hash; # does not work
+  https://rt.cpan.org/Public/Bug/Display.html?id=85233
+
+1.01 2013/04/03 14:37:57 $
 ! lib/*/*.pm t/benchmark.t
   + Revised POD
   + updated benchmark

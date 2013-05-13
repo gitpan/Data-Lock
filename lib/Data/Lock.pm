@@ -2,7 +2,7 @@ package Data::Lock;
 use 5.008001;
 use warnings;
 use strict;
-our $VERSION = sprintf "%d.%02d", q$Revision: 1.1 $ =~ /(\d+)/g;
+our $VERSION = sprintf "%d.%02d", q$Revision: 1.2 $ =~ /(\d+)/g;
 
 use Attribute::Handlers;
 use Scalar::Util ();
@@ -18,7 +18,7 @@ for my $locked ( 0, 1 ) {
     no strict 'refs';
     *{$subname} = sub {
         no warnings "uninitialized";
-        return if Internals::SvREADONLY( $_[0]) == $locked;
+        return if $_[1] and Internals::SvREADONLY( $_[0]) == $locked;
         Internals::SvREADONLY( $_[0], $locked );
         my $type = Scalar::Util::reftype( $_[0] );
         for (
@@ -28,7 +28,7 @@ for my $locked ( 0, 1 ) {
             :                    ()
           )
         {
-            &$subname($_) if ref $_;
+            &$subname($_, 1) if ref $_;
             Internals::SvREADONLY( $_, $locked );
         }
             $type eq 'ARRAY' ? Internals::SvREADONLY( @{ $_[0] }, $locked )
@@ -47,7 +47,7 @@ Data::Lock - makes variables (im)?mutable
 
 =head1 VERSION
 
-$Id: Lock.pm,v 1.1 2013/04/03 14:37:57 dankogai Exp dankogai $
+$Id: Lock.pm,v 1.2 2013/05/13 15:31:54 dankogai Exp dankogai $
 
 =head1 SYNOPSIS
 
